@@ -19,7 +19,7 @@ app = dash.Dash(__name__)
 # Create an app layout
 app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                         style={'textAlign': 'center', 'color': '#503D36',
-                                               'font-size': 40}),
+                                               'font-size': 42}),
                                 # TASK 1: Add a dropdown list to enable Launch Site selection
                                 # The default select value is for ALL sites
                                dcc.Dropdown(id='site-dropdown',
@@ -38,7 +38,12 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                 # TASK 2: Add a pie chart to show the total successful launches count for all sites
                          
                                 # If a specific launch site was selected, show the Success vs. Failed counts for the site
-                                html.Div(dcc.Graph(id='success-pie-chart')),
+                                html.Div(dcc.Graph(id='success-pie-chart')
+                                                   #style={'height':'00%','width':'200%','align':'center'}
+                                                  
+                                                 #style = {'justify':'center'},
+                                        ),
+
                                 html.Br(),
 
                                 html.P("Payload range (Kg):"),
@@ -71,15 +76,25 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
 def get_pie_chart(entered_site):
     filtered_df = spacex_df
     if entered_site == 'ALL':
-        fig = px.pie(filtered_df, values='class', 
+        fig = px.pie(
+        filtered_df, 
+        values='class', 
         names='Launch Site', 
-        title='Success Count for all launch sites')
+        hole = 0.4,
+        title= 'Success Count for all launch sites',
+        color = 'Launch Site',
+        color_discrete_map={'KSC LC-39A':'lightsteelblue',
+                            'CCAFS LC-40':'Cyan',
+                            'VAFB SLC-4E':'RoyalBlue',
+                            'CCAFS SLC-40':'DarkBlue'}
+       )
         return fig
     else:
         # return the outcomes piechart for a selected site
         filtered_df=spacex_df[spacex_df['Launch Site']== entered_site]
         filtered_df=filtered_df.groupby(['Launch Site','class']).size().reset_index(name='class_count')
-        fig=px.pie(filtered_df,values='class_count',names='class',title=f"Total Success Launches for site {entered_site}")
+        fig=px.pie(filtered_df,values='class_count',names='class',title=f"Total Success Launches for site {entered_site}",
+        hole = 0.4)
         return fig
 
 # TASK 4:
@@ -96,14 +111,27 @@ def scatter(entered_site,payload):
     if entered_site=='ALL':
         fig=px.scatter(filtered_df,x='Payload Mass (kg)',y='class',color='Booster Version Category',
                            title='Payload Mass and Success correlation for all sites')
+                           
+        fig.update_traces(marker={'size': 15})
+        fig.update_layout(font=dict(
+                         size=20,
+                         color="#37474F"))
+
+
         return fig
     
     else:
         fig=px.scatter(filtered_df[filtered_df['Launch Site']==entered_site],
-                       x='Payload Mass (kg)',
+                       x= 'Payload Mass (kg)',
                        y='class',
                        color='Booster Version Category',
                        title=f"Success count on Payload mass for site {entered_site}")
+
+        fig.update_layout(font=dict(
+                         size=20,
+                         color="#37474F"))
+
+        fig.update_traces(marker={'size': 15})
         
         return fig
 

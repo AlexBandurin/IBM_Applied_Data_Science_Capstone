@@ -4,6 +4,8 @@
 
 Here, I will be predicting the landing success of Space X's Falcon 9 rocket using a machine learning classification algorithm, with a set of features that are the most relevant to predicting that outcome. 
 
+Algorithms used: SVM, Classification Trees, Logistic Regression and KNN.
+
 # Methodology
 
 ## Data collection:

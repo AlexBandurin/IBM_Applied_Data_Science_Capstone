@@ -6,6 +6,8 @@ Here, I will be predicting the landing success of Space X's Falcon 9 rocket usin
 
 Algorithms used: SVM, Classification Trees, Logistic Regression and KNN.
 
+[Powerpoint Presentation](https://github.com/AlexBandurin/IBM_Applied_Data_Science_Capstone/blob/master/IBM%20Capstone%20Presentation.pptx)
+
 # Methodology
 
 ## Data collection:
